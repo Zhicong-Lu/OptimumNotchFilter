@@ -1,8 +1,9 @@
-%实现最佳陷波滤波器
+%观察噪声的傅里叶图像，逆推陷波的点
+
 clear;clc;
 
 %% 读取图像
-img = imread('data\origin1.png');
+img = imread('data\noise1.png');
 if size(img, 3) == 3
     img = rgb2gray(img);
 end
@@ -11,20 +12,21 @@ imshow(img);
 
 %% 快速傅里叶变换
 IMG = fft2(img);                            %进行傅里叶变换
+
 % figure;
 % imshow(log(abs(IMG) + 1), []);
 
 %% 频域图像居中
 Guv = fftshift(IMG);                        %对傅里叶变换的结果进行居中处理
-% figure;
-% mesh(abs(Guv));
+figure;
+mesh(abs(Guv));
 figure;
 imshow(log(abs(Guv) + 1), []);
 %用于输出
 GvuOut = log(abs(Guv) + 1);
 GvuOut = GvuOut * 255 / max(GvuOut(:));
 GvuOut = uint8(GvuOut);
-imwrite(GvuOut, 'data\origin1FT.png');
+imwrite(GvuOut, 'data\noise1FT.png');
 
 %% 小尺寸 Butterworth 低通滤波器
 lengthOfSide = 35;
@@ -94,5 +96,6 @@ NuvShift = ifftshift(Nuv);                 %对居中的傅里叶变换结果进行还原
 fxy = real(ifft2(NuvShift));               %进行傅里叶逆变换
 
 figure;
-imshow(uint8(fxy));
+imshow(uint8(fxy))
+
 
