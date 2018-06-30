@@ -1,5 +1,6 @@
 %实现最佳陷波滤波器
 clear;clc;
+tic;
 
 %% 读取图像
 img = imread('data\origin1.png');
@@ -116,17 +117,30 @@ imshow(log(ETAxy), []);
 
 
 
-a = 10;
-b = 10;
-gxy = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);
-gxy(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = img;
+a = 5;             %横向
+b = 5;             %纵向
+gxy = img;
+fxyHat = zeros(size(gxy));
+gxyPadded = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);
+gxyPadded(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = img;
+ETAxyPadded = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);
+ETAxyPadded(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = ETAxy;
+for r = 1 : size(fxyHat, 1)
+    for c = 1 : size(fxyHat, 2)
+        wxy = (mean(mean(gxyPadded(r : r + 2 * b, c : c + 2 * a) .* ETAxyPadded(r : r + 2 * b, c : c + 2 * a))) - ...
+            mean(mean(gxyPadded(r : r + 2 * b, c : c + 2 * a))) * mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a)))) / ...
+            (mean(mean((ETAxyPadded(r : r + 2 * b, c : c + 2 * a) .* ETAxyPadded(r : r + 2 * b, c : c + 2 * a)))) - ...
+            mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a))) * mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a))));
+        fxyHat(r, c) = gxy(r, c) - wxy * ETAxy(r, c);
+        
+    end
+end
+
+figure('Name', '最终结果');
+imshow(uint8(fxyHat));
 
 
 
 
 
-
-
-
-
-
+toc;
