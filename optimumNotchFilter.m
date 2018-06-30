@@ -93,32 +93,37 @@ HNPuv = max(HNPuv, rot90(HNPuv, 2));
 figure('Name', '陷波带通模版');
 imshow(HNPuv, []);
 imwrite(HNPuv,'data\mask.png');
-%% 处理
-Nuv = (1 - HNPuv) .* Guv;
+%% 直接陷波滤波
+DNuv = (1 - HNPuv) .* Guv;
 
 figure('Name', '处理后图像傅里叶谱');
-imshow(log(abs(Nuv)), []);
+imshow(log(abs(DNuv)), []);
 
 %% 变换回空间域
-NuvShift = ifftshift(Nuv);                 %对居中的傅里叶变换结果进行还原
-fxy = real(ifft2(NuvShift));               %进行傅里叶逆变换
+DNuvShift = ifftshift(DNuv);                %对居中的傅里叶变换结果进行还原
+dfxy = abs(ifft2(DNuvShift));               %进行傅里叶逆变换
 
 figure('Name', '处理后图像');
-imshow(uint8(fxy));
-
-%% 被过滤掉的部分
-DFuv = HNPuv .* Guv;
-
-figure('Name', '处理后差图像傅里叶谱');
-imshow(log(abs(DFuv)), []);
-
-DFuvShift = ifftshift(DFuv);                 %对居中的傅里叶变换结果进行还原
-dfxy = real(ifft2(DFuvShift));               %进行傅里叶逆变换
-
-figure('Name', '处理后差图像');
-imshow(log(abs(dfxy)), []);
+imshow(uint8(dfxy));
 
 %% 实现最佳滤波器
+Nuv = HNPuv .* Guv;
+NuvShift = ifftshift(Nuv);                  %对居中的傅里叶变换结果进行还原
+ETAxy = abs(ifft2(NuvShift));               %进行傅里叶逆变换
+
+figure('Name', '噪声的模式');
+imshow(log(ETAxy), []);
+
+
+
+a = 10;
+b = 10;
+gxy = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);
+gxy(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = img;
+
+
+
+
 
 
 
