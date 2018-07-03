@@ -32,7 +32,7 @@ for i = 1 : lengthOfSide
     end
 end
 
-D0 = floor(halfLengthOfSideCeil / 10);
+D0 = floor(halfLengthOfSideCeil / 3);
 n = 2;
 Huv = zeros(lengthOfSide);
 for i = 1 : lengthOfSide
