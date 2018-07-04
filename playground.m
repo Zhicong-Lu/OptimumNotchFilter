@@ -1,6 +1,6 @@
 clear;clc;
 
-img = imread('data\other2.png');
+img = imread('data\test.jpg');
 % img = imresize(img, 0.25);
 figure;
 imshow(img);
