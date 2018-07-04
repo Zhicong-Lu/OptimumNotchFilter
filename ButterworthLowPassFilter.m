@@ -49,7 +49,7 @@ imshow(Huv, []);
 Nuv = Huv .* Guv;
 
 figure('Name', '处理后图像傅里叶谱');
-imshow(log(abs(Nuv)), []);
+imshow(log(abs(Nuv + 1)), []);
 
 %% 变换回空间域
 NuvShift = ifftshift(Nuv);                 %对居中的傅里叶变换结果进行还原
@@ -62,7 +62,7 @@ imshow(uint8(fxy));
 DFuv = (1 - Huv) .* Guv;
 
 figure('Name', '处理后差图像傅里叶谱');
-imshow(log(abs(DFuv)), []);
+imshow(log(abs(DFuv + 1)), []);
 
 DFuvShift = ifftshift(DFuv);                 %对居中的傅里叶变换结果进行还原
 dfxy = real(ifft2(DFuvShift));               %进行傅里叶逆变换
