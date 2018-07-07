@@ -1,4 +1,16 @@
 %ÊµÏÖ×î¼ÑÏİ²¨ÂË²¨Æ÷
+%{
+¾ßÌå²½Öè£º
+1¡¢¶ÁÈ¡Í¼Ïñ
+2¡¢½øĞĞ¿ìËÙ¸µÀïÒ¶±ä»»
+3¡¢½«ÆµÓòÍ¼Ïñ¾ÓÖĞ
+4¡¢Éú³ÉĞ¡³ß´çµÄ Butterworth µÍÍ¨ÂË²¨Æ÷
+5¡¢Í¨¹ı¹Û²ìÆµÓòÍ¼Ïñ£¬È·¶¨ĞèÒªÅÅ³ıµÄÆµÂÊ³É·Ö£¬¼ÇÏÂÆä×ø±ê£¬ÖÆ×÷Ïİ²¨´øÍ¨Ä£°æ
+6¡¢°ÑËùµÃµÄÏİ²¨´øÍ¨Ä£°æÓÃÓÚ×î¼ÑÂË²¨Æ÷µÄÊµÏÖ
+
+ÆäËû£º
+¼ÓÈëÁËÖ±½Ó¶ÔÆµÓòÍ¼Ïñ½øĞĞÏİ²¨ÂË²¨µÄ¶Ô±È
+%}
 clear;clc;
 tic;                                        %¼ÆÊ±
 
@@ -7,20 +19,18 @@ img = imread('data\origin1.png');           %¶ÁÈ¡Í¼Ïñ
 if size(img, 3) == 3                        %ÈôÎª²ÊÉ«Í¼£¬×ªÎª»Ò¶ÈÍ¼
     img = rgb2gray(img);
 end
-figure('Name', 'Ô­Í¼');                     %ÏÔÊ¾Ô­Í¼
-imshow(img);
+% figure('Name', 'Ô­Í¼');                     %ÏÔÊ¾Ô­Í¼
+% imshow(img);
 
 %% ¿ìËÙ¸µÀïÒ¶±ä»»
 IMG = fft2(img);                            %½øĞĞ¿ìËÙ¸µÀïÒ¶±ä»»
-% figure;
-% imshow(log(abs(IMG) + 1), []);
 
 %% ÆµÓòÍ¼Ïñ¾ÓÖĞ
 Guv = fftshift(IMG);                        %¶Ô¸µÀïÒ¶±ä»»µÄ½á¹û½øĞĞ¾ÓÖĞ´¦Àí
 % figure;
 % mesh(abs(Guv));
-figure('Name', 'Ô­Í¼Æ½ÒÆºó¸µÀïÒ¶Æ×');        %ÏÔÊ¾Ô­Í¼Æ½ÒÆºó¸µÀïÒ¶Æ×
-imshow(log(abs(Guv) + 1), []);
+% figure('Name', 'Ô­Í¼Æ½ÒÆºó¸µÀïÒ¶Æ×');        %ÏÔÊ¾Ô­Í¼Æ½ÒÆºó¸µÀïÒ¶Æ×
+% imshow(log(abs(Guv) + 1), []);
 %Êä³öÆ½ÒÆºóµÄ¸µÀïÒ¶Æ×
 GvuOut = log(abs(Guv) + 1);                 %»Ò¶ÈÑ¹Ëõ
 GvuOut = GvuOut * 255 / max(GvuOut(:));     %»Ò¶ÈÀ­ÉìÖÁ0-255
@@ -48,8 +58,8 @@ for i = 1 : lengthOfSide                                %±éÀú£¬¼ÆËãµÃµ½ÂË²¨Æ÷Ã¿Ò
 end
 % figure;
 % mesh(Huv);
-figure('Name', 'Ğ¡³ß´ç Butterworth µÍÍ¨ÂË²¨Æ÷');        %ÏÔÊ¾Ğ¡³ß´ç Butterworth µÍÍ¨ÂË²¨Æ÷
-imshow(Huv, []);
+% figure('Name', 'Ğ¡³ß´ç Butterworth µÍÍ¨ÂË²¨Æ÷');        %ÏÔÊ¾Ğ¡³ß´ç Butterworth µÍÍ¨ÂË²¨Æ÷
+% imshow(Huv, []);
 
 %% ÖÆ×÷Ïİ²¨´øÍ¨Ä£°æ
 HNPuv = zeros(size(Guv, 1) + 2 * halfLengthOfSideFloor);        %´æ´¢Ïİ²¨´øÍ¨Ä£°æ£¬ĞèÒªpaddingÒÔ·ÅÖÃÔÚ±ßÔµµÄĞ¡³ß´çÄ£°æ£¬×îºó½áÊøÊ±ÔÙ²Ã¼ô
@@ -98,35 +108,27 @@ end
 HNPuv = HNPuv(1 + halfLengthOfSideFloor : end - halfLengthOfSideFloor, 1 + halfLengthOfSideFloor : end - halfLengthOfSideFloor);
 HNPuv = max(HNPuv, rot90(HNPuv, 2));                    %ÓÉÓÚ¶Ô³ÆĞÔ£¬½«Í¼ÏñĞı×ª180¡ãºóÓëÔ­Í¼ÓÃmax´¦Àí¸²¸ÇÎÊÌâ£¬µÃµ½×îÖÕÏİ²¨´øÍ¨Ä£°æ
 
-figure('Name', 'Ïİ²¨´øÍ¨Ä£°æ');                          %ÏÔÊ¾Ïİ²¨´øÍ¨Ä£°æ
-imshow(HNPuv, []);
+% figure('Name', 'Ïİ²¨´øÍ¨Ä£°æ');                          %ÏÔÊ¾Ïİ²¨´øÍ¨Ä£°æ
+% imshow(HNPuv, []);
 imwrite(HNPuv,'data\mask.png');                         %Êä³öÏİ²¨´øÍ¨Ä£°æ
-%% Ö±½ÓÏİ²¨ÂË²¨
-DNuv = (1 - HNPuv) .* Guv;                              %ÓÃ1¼õÈ¥Ïİ²¨´øÍ¨Ä£°æ×ª»»³ÉÏİ²¨´ø×èÄ£°æ£¬ÓëÔ­Í¼ÔÚÆµÓòÏà³Ë£¬ÆÚÍû¹ıÂËµôÖÜÆÚÔëÉù³É·Ö
 
-figure('Name', 'Ïİ²¨´ø×è´¦ÀíºóÍ¼ÏñµÄ¸µÀïÒ¶Æ×');           %ÏÔÊ¾Ïİ²¨´ø×è´¦ÀíºóÍ¼Ïñ¸µÀïÒ¶Æ×
-imshow(log(abs(DNuv)), []);
 
-%% ±ä»»»Ø¿Õ¼äÓò
-DNuvShift = ifftshift(DNuv);                            %¶Ô¾ÓÖĞµÄ¸µÀïÒ¶±ä»»½á¹û½øĞĞ»¹Ô­
-dfxy = abs(ifft2(DNuvShift));                           %½øĞĞ¸µÀïÒ¶Äæ±ä»»£¬µÃµ½¿Õ¼äÓòÍ¼Ïñ
-
-figure('Name', 'Ïİ²¨´ø×è´¦ÀíºóµÄÍ¼Ïñ');                  %ÏÔÊ¾Ïİ²¨´ø×è´¦ÀíºóµÄÍ¼Ïñ
-imshow(uint8(dfxy));
-
-%% ÊµÏÖ×î¼ÑÂË²¨Æ÷
+%% ÊµÏÖ×î¼ÑÏİ²¨ÂË²¨Æ÷
 Nuv = HNPuv .* Guv;                                     %Ïİ²¨´øÍ¨Ä£°æÓëÔ­Í¼ÔÚÆµÓòÏà³Ë£¬ÆÚÍûµÃµ½ÖÜÆÚÔëÉù³É·Ö
 NuvShift = ifftshift(Nuv);                              %¶Ô¾ÓÖĞµÄ¸µÀïÒ¶±ä»»½á¹û½øĞĞ»¹Ô­
 ETAxy = abs(ifft2(NuvShift));                           %½øĞĞ¸µÀïÒ¶Äæ±ä»»£¬µÃµ½¿Õ¼äÓòÍ¼Ïñ
 
-figure('Name', 'ÔëÉùµÄÄ£Ê½');                            %ÏÔÊ¾ÔëÉùµÄÄ£Ê½
-imshow(log(ETAxy), []);
+% figure('Name', 'ÔëÉùµÄ¸µÀïÒ¶Æ×')
+% imshow(log(abs(Nuv) + 1), []);
+% figure('Name', 'ÔëÉùµÄÄ£Ê½');                            %ÏÔÊ¾ÔëÉùµÄÄ£Ê½
+% imshow(log(ETAxy), []);
 
 
 a = 5;                                                  %ÁÚÓò´óĞ¡£¬ºáÏò
 b = 5;                                                  %ÁÚÓò´óĞ¡£¬×İÏò
 gxy = img;                                              %Ô­Í¼Ïñ
 fxyHat = zeros(size(gxy));                              %×î¼ÑÏİ²¨ÂË²¨½á¹ûÍ¼Ïñ¾ØÕó
+wxy = zeros(size(gxy));                                 %´æ´¢Ã¿Ò»ÏñËØ×ø±êµÄÈ¨Öµ
 %±ß½ç²ÉÓÃpadding²¹0´¦Àí
 gxyPadded = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);            %Ô­Í¼Ïñpadding
 gxyPadded(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = img;
@@ -134,16 +136,73 @@ ETAxyPadded = zeros([(size(img, 1) + 2 * b), (size(img, 2) + 2 * a)]);          
 ETAxyPadded(b + 1 : b + size(img, 1), a + 1 : a + size(img, 2)) = ETAxy;
 for r = 1 : size(fxyHat, 1)                             %¶Ô×î¼ÑÏİ²¨ÂË²¨½á¹û¾ØÕóÃ¿Ò»µãÓ¦ÓÃÊ½(5.4-13)£¬µÃµ½×îÖÕÍ¼Ïñ
     for c = 1 : size(fxyHat, 2)
-        wxy = (mean(mean(gxyPadded(r : r + 2 * b, c : c + 2 * a) .* ETAxyPadded(r : r + 2 * b, c : c + 2 * a))) - ...
+        wxy(r, c) = (mean(mean(gxyPadded(r : r + 2 * b, c : c + 2 * a) .* ETAxyPadded(r : r + 2 * b, c : c + 2 * a))) - ...
             mean(mean(gxyPadded(r : r + 2 * b, c : c + 2 * a))) * mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a)))) / ...
             (mean(mean((ETAxyPadded(r : r + 2 * b, c : c + 2 * a) .* ETAxyPadded(r : r + 2 * b, c : c + 2 * a)))) - ...
             mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a))) * mean(mean(ETAxyPadded(r : r + 2 * b, c : c + 2 * a))));
-        fxyHat(r, c) = gxy(r, c) - wxy * ETAxy(r, c);
+        fxyHat(r, c) = gxy(r, c) - wxy(r, c) * ETAxy(r, c);
     end
 end
 
-figure('Name', '×î¼ÑÏİ²¨ÂË²¨½á¹û');                              %ÏÔÊ¾×î¼ÑÏİ²¨ÂË²¨½á¹û
-imshow(uint8(fxyHat));                                          %Ö±½Ó×ªÎªuint8ÀàĞÍÏÔÊ¾
+
+
+% figure('Name', '×î¼ÑÏİ²¨ÂË²¨½á¹û');                      %ÏÔÊ¾×î¼ÑÏİ²¨ÂË²¨½á¹û
+% imshow(uint8(fxyHat));                                  %Ö±½Ó×ªÎªuint8ÀàĞÍÏÔÊ¾
+GuvHAT = fft2(fxyHat);
+GuvHAT = fftshift(GuvHAT);
+% figure('Name', '×î¼ÑÏİ²¨ÂË²¨½á¹û¸µÀïÒ¶Æ×');               %×î¼ÑÏİ²¨ÂË²¨½á¹û¸µÀïÒ¶Æ×
+% imshow(log(abs(GuvHAT) + 1), []);
+
+
+%% Ö±½ÓÏİ²¨ÂË²¨
+DNuv = (1 - HNPuv) .* Guv;                              %ÓÃ1¼õÈ¥Ïİ²¨´øÍ¨Ä£°æ×ª»»³ÉÏİ²¨´ø×èÄ£°æ£¬ÓëÔ­Í¼ÔÚÆµÓòÏà³Ë£¬ÆÚÍû¹ıÂËµôÖÜÆÚÔëÉù³É·Ö
+
+% figure('Name', 'Ïİ²¨´ø×è´¦ÀíºóÍ¼ÏñµÄ¸µÀïÒ¶Æ×');           %ÏÔÊ¾Ïİ²¨´ø×è´¦ÀíºóÍ¼Ïñ¸µÀïÒ¶Æ×
+% imshow(log(abs(DNuv) + 1), []);
+
+DNuvShift = ifftshift(DNuv);                            %¶Ô¾ÓÖĞµÄ¸µÀïÒ¶±ä»»½á¹û½øĞĞ»¹Ô­
+dfxy = abs(ifft2(DNuvShift));                           %½øĞĞ¸µÀïÒ¶Äæ±ä»»£¬µÃµ½¿Õ¼äÓòÍ¼Ïñ
+
+% figure('Name', 'Ïİ²¨´ø×è´¦ÀíºóµÄÍ¼Ïñ');                  %ÏÔÊ¾Ïİ²¨´ø×è´¦ÀíºóµÄÍ¼Ïñ
+% imshow(uint8(dfxy));
+
+
+%% ÏÔÊ¾½á¹û
+figure('Name', '¿Õ¼äÓò¶Ô±ÈÍ¼');
+set(gcf,'outerposition',get(0,'screensize'));
+subplot(1, 3, 1);
+imshow(img);
+title('Ô­Í¼');
+subplot(1, 3, 2);
+imshow(uint8(fxyHat));
+title('×î¼ÑÂË²¨Æ÷´¦ÀíºóÍ¼Ïñ');
+subplot(1, 3, 3);
+imshow(uint8(dfxy));
+title('Ïİ²¨ÂË²¨Æ÷´¦ÀíºóÍ¼Ïñ');
+
+figure('Name', 'ÆµÓò¶Ô±ÈÍ¼');
+set(gcf,'outerposition',get(0,'screensize'));
+subplot(1, 3, 1);
+imshow(log(abs(Guv) + 1), []);
+title('Ô­Í¼¸µÀïÒ¶Æ×');
+subplot(1, 3, 2);
+imshow(log(abs(GuvHAT) + 1), []);
+title('×î¼ÑÂË²¨Æ÷´¦ÀíºóÍ¼Ïñ¸µÀïÒ¶Æ×');
+subplot(1, 3, 3);
+imshow(log(abs(DNuv) + 1), []);
+title('Ïİ²¨ÂË²¨Æ÷´¦ÀíºóÍ¼Ïñ¸µÀïÒ¶Æ×');
+
+figure('Name', 'ÆäËû');
+set(gcf,'outerposition',get(0,'screensize'));
+subplot(1, 3, 1);
+imshow(Huv, []);
+title('Ğ¡³ß´ç Butterworth µÍÍ¨ÂË²¨Æ÷');
+subplot(1, 3, 2);
+imshow(HNPuv, []);
+title('Ïİ²¨´øÍ¨Ä£°æ');
+subplot(1, 3, 3);
+imshow(log(ETAxy), []);
+title('ÔëÉùµÄÄ£Ê½');
 
 
 toc;                                        %¼ÆÊ±½áÊø
